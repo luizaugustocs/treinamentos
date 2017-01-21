@@ -1,0 +1,11 @@
+{
+    "client": {
+        "apiKey": {
+            "id": "3FFJJVNE51O8FCTNR981IS4D5",
+            "secret": "FEcrDr1CslyPbb2rrkYCPCBFS1FHjBzCNXJ8mFGiMPQ"
+        }
+    },
+    "application": {
+        "href": "https://api.stormpath.com/v1/applications/44ZRVquOHNvtR2gQgWXkge"
+    }
+}
