@@ -12,7 +12,7 @@ module.exports = {
         publicPath: '/js',
         pathinfo: true
     },
-   module: {
+    module: {
         loaders: [{
             test: /\.js$/,
             loaders: ['babel'],
