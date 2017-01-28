@@ -1,37 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-	IndexRoute,
-	Route,
-	browserHistory
+    IndexRoute,
+    Route,
+    browserHistory
 }
-from 'react-router';
+    from 'react-router';
 import ReactStormpath, {
-	Router,
-	HomeRoute,
-	LoginRoute,
-	AuthenticatedRoute
+    Router,
+    HomeRoute,
+    LoginRoute,
+    AuthenticatedRoute
 }
-from 'react-stormpath';
+    from 'react-stormpath';
 
 import {
-	Layout,
-	Login,
-	Register
+    Layout,
+    Login,
+    Register,
+    List,
+    Page
 }
-from './pages';
+    from './pages';
 
 ReactStormpath.init();
 
 ReactDOM.render(
-	(<Router history={ browserHistory }>
-		<Route component={ Layout }>
-			<HomeRoute path="/" >
-				<IndexRoute />
-			</HomeRoute>
-			<LoginRoute path="/login" component={ Login } />
-			<Route path="/register" component={ Register } />
-		</Route>
-	</Router>),
-	document.getElementById('root')
+    (<Router history={ browserHistory }>
+        <Route component={ Layout }>
+            <HomeRoute path="/">
+                <IndexRoute component={List}/>
+            </HomeRoute>
+            <Route path="/issue/:id" component={ Page }/>
+            <LoginRoute path="/login" component={ Login }/>
+            <Route path="/register" component={ Register }/>
+        </Route>
+    </Router>),
+    document.getElementById('root')
 );
