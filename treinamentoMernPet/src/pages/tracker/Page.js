@@ -73,8 +73,8 @@ class Page extends React.Component {
                 </h1>
                 <div className="subHeader">
                     <em>{'Created at '}</em>
-                    <strong>{Moment(issue.createdAt).format('L')}</strong>
-                    <em>{ 'by' }</em>
+                    <strong>{Moment(issue.createdAt).format('DD/MM/YYYY')}</strong>
+                    <em>{ ' by ' }</em>
                     <strong>{ issue.owner}</strong>
                 </div>
                 <div className="ui horizontal segments">

@@ -62,7 +62,7 @@ class Item extends Component {
                 <td className={this.getColor(this.props.priority)}>
                     {this.getPriority(this.props.priority)}
                 </td>
-                <td> {Moment(this.props.createdAt).format('L')} </td>
+                <td> {Moment(this.props.createdAt).format('DD/MM/YYYY')} </td>
                 <td> {this.props.owner} </td>
                 <td> {this.props.description} </td>
             </tr>
