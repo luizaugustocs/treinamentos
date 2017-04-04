@@ -48,8 +48,8 @@ app.use(stormpath.init(app, {
 
 // API
 var api = express.Router();
-require('./api')(api);
-app.use('/api', api); 
+//require('./api')(api);
+//app.use('/api', api); 
 
 // STATIC FILES
 app.use('/css', express.static(path.join(__dirname, 'public', 'css')));
@@ -72,3 +72,4 @@ app.on('stormpath.ready', function() {
 		console.log('api running on port ' + port);
 	});
 });
+	
