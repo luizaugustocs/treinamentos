@@ -1,12 +1,25 @@
 import React, {Component, PropTypes} from 'react';
 
 class SearchBar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {searchText: ''}
+        // this.onInputChange = this.onInputChange.bind(this)
+    }
+
     render() {
-        return <input onChange={this.onInputChange} />
+        return (
+            <div>
+                <input onChange={(event) => this.setState({searchText: event.target.value})}/>
+                {/*<input onChange={this.onInputChange}/>*/}
+                Valor do input : {this.state.searchText}
+            </div>
+        )
     }
 
     onInputChange(event) {
-        console.log(event.target.value)
+        this.setState({searchText: event.target.value});
     }
 }
 
