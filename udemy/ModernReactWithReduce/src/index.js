@@ -12,13 +12,16 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {videos: []};
+        this.state = {
+            videos: []
+            , selectedVideo: null
+        };
 
-        YTSearch({key: API_KEY, term: 'dogs'}, (videos) => {
-            this.setState({videos})
-            // this.setState({ videos: [videos]})
-            // as duas formas são iguais, mas se o nome do parametro é igual ao objeto
-            // o ES6 faz bruxaria e pode usar só o nome do objeto
+        YTSearch({key: API_KEY, term: 'dog puppy'}, (videos) => {
+            this.setState({
+                videos: videos
+                , selectedVideo: videos[0]
+            })
         });
 
     }
@@ -27,8 +30,10 @@ class App extends Component {
         return (
             <div>
                 <SearchBar />
-                <VideoDetail video={this.state.videos[0]}/>
-                <VideoList videos={this.state.videos} />
+                <VideoDetail video={this.state.selectedVideo}/>
+                <VideoList
+                    onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+                    videos={this.state.videos}/>
             </div>
         );
     }
