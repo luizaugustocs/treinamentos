@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {Component} from 'react'; // React é pra gerenciar a criação dos componentes
 import ReactDOM from 'react-dom'; // ReactDOM é pra mandar pro DOM
 import Keys from '../keys'
@@ -32,9 +33,12 @@ class App extends Component {
     }
 
     render() {
+        const videoSearch = _.debounce((searchText) => {
+            this.videoSearch(searchText)
+        }, 300)
         return (
             <div>
-                <SearchBar onSearchTextChange={text => this.videoSearch(text)}/>
+                <SearchBar onSearchTextChange={videoSearch}/>
                 <VideoDetail video={this.state.selectedVideo}/>
                 <VideoList
                     onVideoSelect={selectedVideo => this.setState({selectedVideo})}
