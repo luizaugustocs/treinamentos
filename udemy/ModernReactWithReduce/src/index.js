@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom'; // ReactDOM é pra mandar pro DOM
 import Keys from '../keys'
 import YTSearch from 'youtube-api-search';
 import SearchBar from './components/searchBar';
-
+import VideoList from './components/videoList'
 const API_KEY = Keys.googleApiKey;
-
 
 
 class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {videos : []};
+        this.state = {videos: []};
 
         YTSearch({key: API_KEY, term: 'dogs'}, (videos) => {
-            this.setState({ videos })
+            this.setState({videos})
             // this.setState({ videos: [videos]})
             // as duas formas são iguais, mas se o nome do parametro é igual ao objeto
             // o ES6 faz bruxaria e pode usar só o nome do objeto
@@ -26,7 +25,8 @@ class App extends Component {
     render() {
         return (
             <div>
-                <SearchBar/>
+                <SearchBar />
+                <VideoList videos={this.state.videos} />
             </div>
         );
     }
