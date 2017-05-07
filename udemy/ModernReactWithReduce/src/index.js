@@ -4,6 +4,7 @@ import Keys from '../keys'
 import YTSearch from 'youtube-api-search';
 import SearchBar from './components/searchBar';
 import VideoList from './components/videoList'
+import VideoDetail from "./components/videoDetail";
 const API_KEY = Keys.googleApiKey;
 
 
@@ -26,6 +27,7 @@ class App extends Component {
         return (
             <div>
                 <SearchBar />
+                <VideoDetail />
                 <VideoList videos={this.state.videos} />
             </div>
         );
