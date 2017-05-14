@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux';
+import {selectBook} from '../actions/index'
+import {bindActionCreators} from 'redux';
 
 class BookList extends Component {
 
@@ -23,8 +25,15 @@ class BookList extends Component {
 
 function mapStateToProps(state) {
     return {
-        books : state.books
+        books: state.books
     }
 }
 
-export default  connect(mapStateToProps)(BookList);
+// A funcao retornada vai para o componente dentro do props
+function mapDispatchToProps(dispatch){
+    // passa o resultado das ações para todos os reducers
+    return bindActionCreators({selectBookAction: selectBook}, dispatch);
+}
+
+// Passar coisas do state do redux e as actions para as props do componente
+export default  connect(mapStateToProps, mapDispatchToProps)(BookList);
