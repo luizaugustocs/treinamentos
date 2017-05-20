@@ -47,7 +47,6 @@ class WeatherList extends Component {
 }
 
 function linkState({weather}) {
-    console.log(weather)
     return {weather};
 }
 
