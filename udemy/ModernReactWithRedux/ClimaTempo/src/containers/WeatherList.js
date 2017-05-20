@@ -8,6 +8,15 @@ class WeatherList extends Component {
 
     }
 
+    renderWeather(cityData) {
+        const name = cityData.city.data;
+        return (
+            <tr key={name}>
+                <td>{name}</td>
+            </tr>
+        )
+    }
+
 
     render() {
         return (
@@ -21,14 +30,17 @@ class WeatherList extends Component {
                 </tr>
                 </thead>
                 <tbody>
-
+                {this.props.weather.map(this.renderWeather)}
                 </tbody>
             </table>
         )
     }
+
+
 }
 
 function linkState({weather}) {
+    console.log(weather)
     return {weather};
 }
 
