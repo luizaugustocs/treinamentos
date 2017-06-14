@@ -11,7 +11,7 @@ class PostNew extends Component {
                     type="text"
                     {...field.input}
                 />
-                <p className="text-danger">{field.meta.error}</p>
+                {field.meta.touched && <p className="text-danger">{field.meta.error}</p>}
             </div>
         )
     };
