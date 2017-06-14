@@ -4,17 +4,18 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import {BrowserRouter, Route} from 'react-router-dom';
 import Promise from 'redux-promise';
-
 import reducers from './reducers';
 import PostList from './components/postList'
-const createStoreWithMiddleware = applyMiddleware(Promise)(createStore);
+import PostCreate from './components/postCreate';
 
+const createStoreWithMiddleware = applyMiddleware(Promise)(createStore);
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <BrowserRouter>
             <div>
                 <Route path="/" component={PostList}/>
+                <Route path="/posts/new" component={PostCreate}/>
             </div>
         </BrowserRouter>
     </Provider>
