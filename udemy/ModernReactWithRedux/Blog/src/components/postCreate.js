@@ -3,25 +3,27 @@ import {Field, reduxForm} from 'redux-form';
 
 class PostNew extends Component {
     renderField(field) {
+        const {meta: {touched, error}, input, label} = field;
+        const className = `form-group ${touched && error ? 'has-danger' : '' }`;
         return (
-            <div className="form-group">
-                <label>{field.label}</label>
+            <div className={className}>
+                <label className="text-help">{label}</label>
                 <input
                     className="form-control"
                     type="text"
-                    {...field.input}
+                    {...input}
                 />
-                {field.meta.touched && <p className="text-danger">{field.meta.error}</p>}
+                {touched && <p className="text-help">{error}</p>}
             </div>
         )
     };
 
-    onSubmit(values){
+    onSubmit(values) {
         console.log(values);
     }
 
     render() {
-        const { handleSubmit } = this.props;
+        const {handleSubmit} = this.props;
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field name="title" label="Title" component={this.renderField}/>
