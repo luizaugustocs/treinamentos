@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getPosts} from '../actions';
 import _ from 'lodash';
+import {Link} from 'react-router-dom';
 
 class PostList extends Component {
     componentDidMount(){
@@ -11,6 +12,12 @@ class PostList extends Component {
         return (
             <div>
                 <h3>Posts</h3>
+                <div className="text-xs-right">
+                    <Link className="btn btn-primary"
+                          to="/posts/new">
+                        New Post
+                    </Link>
+                </div>
                 <ul className="list-group">
                     {this.mountPosts()}
                 </ul>
