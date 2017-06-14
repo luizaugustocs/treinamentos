@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 
-class PostNew extends Component{
-    renderField(field){
+class PostNew extends Component {
+    renderField(field) {
         return (
             <div className="form-group">
                 <label>{field.label}</label>
@@ -11,10 +11,12 @@ class PostNew extends Component{
                     type="text"
                     {...field.input}
                 />
+                {field.meta.error}
             </div>
         )
     };
-    render (){
+
+    render() {
         return (
             <form>
                 <Field name="title" label="Title" component={this.renderField}/>
@@ -25,19 +27,19 @@ class PostNew extends Component{
     }
 }
 
-function validate(values){
+function validate(values) {
     console.log(values);
     const errors = {};
 
 
-    if (!values.title){
+    if (!values.title) {
         errors.title = 'Enter a title!'
     }
-    if (!values.title){
-        errors.categories = 'Enter some categoriss!'
+    if (!values.title) {
+        errors.categories = 'Enter some categories!'
     }
 
-    if (!values.content){
+    if (!values.content) {
         errors.content = 'Enter some content!'
     }
 
