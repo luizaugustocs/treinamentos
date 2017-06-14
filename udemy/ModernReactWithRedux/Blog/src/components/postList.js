@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getPosts} from '../actions'
+import {getPosts} from '../actions';
+import _ from 'lodash';
 
 class PostList extends Component {
     componentDidMount(){
@@ -9,11 +10,29 @@ class PostList extends Component {
     render() {
         return (
             <div>
-                List
+                <h3>Posts</h3>
+                <ul className="list-group">
+                    {this.mountPosts()}
+                </ul>
             </div>
         )
     }
+
+    mountPosts() {
+        return _.map(this.props.posts, post => {
+            return (
+                <li className="list-group-item" key={post.id}>
+                    {post.title}
+                </li>
+            );
+        });
+    };
 }
 
 
-export default connect(null, {getPosts})(PostList);
+function mapStateToProps(state){
+    return {posts: state.posts}
+}
+
+
+export default connect(mapStateToProps, {getPosts})(PostList);
