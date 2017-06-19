@@ -7,6 +7,7 @@ import Promise from 'redux-promise';
 import reducers from './reducers';
 import PostList from './components/postList'
 import PostCreate from './components/postCreate';
+import PostShow from './components/postShow';
 
 const createStoreWithMiddleware = applyMiddleware(Promise)(createStore);
 
@@ -16,6 +17,7 @@ ReactDOM.render(
             <div>
                 <Switch>  {/* O Switch obriga a sair na primeira rota que der match */}
                     <Route path="/posts/new" component={PostCreate}/>
+                    <Route path="/posts/:id" component={PostShow}/>
                     <Route path="/" component={PostList}/>
                 </Switch>
             </div>
