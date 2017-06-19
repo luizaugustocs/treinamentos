@@ -1,8 +1,10 @@
-import {GET_POST, FETCH_POST} from '../actions'
+import {GET_POST, FETCH_POST, DELETE_POST} from '../actions'
 import _ from 'lodash';
 
 export default function(state = {}, action){
     switch (action.type){
+        case DELETE_POST:
+            return _.omit(state, action.payload);
         case FETCH_POST:
             // const post = action.payload.data;
             // const newState = { ...state};
