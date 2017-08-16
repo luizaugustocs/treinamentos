@@ -1,0 +1,24 @@
+{
+  "name": "graphql-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node --presets es2015 ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^1.1.0",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "graphql": "^0.10.5",
+    "graphql-tools": "^1.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
