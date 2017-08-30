@@ -6,4 +6,4 @@ keys.js
 
 # IntelliJ
 *.iml
-.idea
+.idea/
