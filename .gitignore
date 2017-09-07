@@ -1,2 +1,6 @@
 
-\.idea/
+.idea/
+
+angular4Ionic/*/app/
+
+**/node_modules/

@@ -12,8 +12,7 @@ const start = async () => {
     const mongo = await connectMongo();
 
     const buildOptions = async (req, res) => {
-        const user = await authenticate(req, mongo.Users);
-        console.log(user);
+        const user = await authenticate(req, mongo.Users)
         return {
             context: {mongo, user},
             schema
