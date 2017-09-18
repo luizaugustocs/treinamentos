@@ -1,3 +1,35 @@
-<p>
-  details works!
-</p>
+<p-panel>
+  <span class="ui-float-label" style="margin-bottom: 30px">
+    <input id="name" type="text" size="30" pInputText [(ngModel)]="entity.name">
+    <label for="name">Nome</label>
+  </span>
+  <span class="ui-float-label" style="margin-bottom: 30px">
+    <input id="breed" type="text" size="30" pInputText [(ngModel)]="entity.breed">
+    <label for="breed">Raça</label>
+  </span>
+  <span class="ui-float-label" style="margin-bottom: 30px">
+    <input id="color" type="text" size="30" pInputText [(ngModel)]="entity.color">
+    <label for="color">Cor</label>
+  </span>
+  <span class="ui-float-label" style="margin-bottom: 30px">
+    <p-toggleButton id="castrated" [(ngModel)]="entity.castrated" onLabel="Castrado" offLabel="Não Castrado"></p-toggleButton>
+  </span>
+  <span class="ui-float-label" style="margin-bottom: 30px">
+    <p-autoComplete name="dono" [(ngModel)]="entity.owner" [suggestions]="owners" (completeMethod)="search($event)"
+                    [size]="30" [minLength]="1" [dropdown]="true"  field="name">
+</p-autoComplete>
+  </span>
+
+
+
+  <p-footer>
+
+    <button pButton type="button" (click)="goBack()" label="Voltar" class="ui-button-warning"></button>
+    <button pButton type="button" (click)="save()" label="Salvar" class="ui-button-success"></button>
+  </p-footer>
+</p-panel>
+
+
+
+
+
