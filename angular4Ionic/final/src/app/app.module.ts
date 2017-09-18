@@ -2,7 +2,7 @@ import { PersonModule } from './person/person.module';
 import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {InputTextModule, PanelModule} from 'primeng/primeng';
+import {ButtonModule, InputTextModule, PanelModule, ToolbarModule} from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,9 +11,12 @@ import {AngularFireDatabaseModule} from 'angularfire2/database';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
+import {DogModule} from "./dog/dog.module";
+import { LoginComponent } from './login/login.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -21,9 +24,10 @@ import 'rxjs/add/operator/map';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     PersonModule,
+    DogModule,
     BrowserAnimationsModule,
     InputTextModule,
-    PanelModule
+    PanelModule, ToolbarModule, ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
