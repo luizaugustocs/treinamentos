@@ -24,5 +24,11 @@ export class PersonListComponent implements OnInit {
     console.log(id);
     this.router.navigate(['details', id], {relativeTo: this.route});
   }
+  remove(id){
+    return this.service.remove(id);
+  }
+  refresh() {
+    this.personList = this.service.getAll();
+  }
 
 }

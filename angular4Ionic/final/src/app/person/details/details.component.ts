@@ -24,6 +24,7 @@ export class PersonDetailsComponent implements OnInit {
       this.entity = {
         ... obj
       }
+      this.entity.$key = obj.$key;
       //this.entity = obj;
     })
   }
@@ -33,6 +34,9 @@ export class PersonDetailsComponent implements OnInit {
     .then(() => {
       this.router.navigate(['../..'], {relativeTo: this.route})
     })
+  }
+  goBack(){
+    this.router.navigate(['../..'], {relativeTo: this.route})
   }
 
 }
