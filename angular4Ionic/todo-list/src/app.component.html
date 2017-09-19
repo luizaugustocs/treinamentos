@@ -1,0 +1,6 @@
+<h1>Todo List</h1>
+
+<input type="text" [(ngModel)]="currentTask.description" > 
+<button type="button" (click)="addTask(currentTask)"> Adicionar</button>
+
+<todo-list [tasks]="tasks"></todo-list>
