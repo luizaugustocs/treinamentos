@@ -14,9 +14,9 @@ import {PersonService} from "../../person/person.service";
 export class DogDetailsComponent implements OnInit {
 
 
-  private entity: Dog;
+  public entity: Dog;
 
-  private owners: any[];
+  public owners: any[];
 
   constructor(private service: DogService, private personService: PersonService, private router: Router, private route: ActivatedRoute) {
     this.entity = new Dog();

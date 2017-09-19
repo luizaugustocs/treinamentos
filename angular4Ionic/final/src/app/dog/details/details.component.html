@@ -15,9 +15,10 @@
     <p-toggleButton id="castrated" [(ngModel)]="entity.castrated" onLabel="Castrado" offLabel="Não Castrado"></p-toggleButton>
   </span>
   <span class="ui-float-label" style="margin-bottom: 30px">
-    <p-autoComplete name="dono" [(ngModel)]="entity.owner" [suggestions]="owners" (completeMethod)="search($event)"
+    <p-autoComplete name="dono" inputId="dono" [(ngModel)]="entity.owner" [suggestions]="owners" (completeMethod)="search($event)"
                     [size]="30" [minLength]="1" [dropdown]="true"  field="name">
 </p-autoComplete>
+    <label for="dono">Dono</label>
   </span>
 
 

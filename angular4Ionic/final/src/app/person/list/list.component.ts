@@ -14,7 +14,7 @@ export class PersonListComponent implements OnInit {
   constructor(private service: PersonService, private router: Router, private route: ActivatedRoute) {
   }
 
-  private personList: FirebaseListObservable<Person[]>;
+  public personList: FirebaseListObservable<Person[]>;
 
   ngOnInit() {
     this.personList = this.service.getAll();

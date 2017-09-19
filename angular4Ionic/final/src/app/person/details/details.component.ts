@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PersonDetailsComponent implements OnInit {
 
-  private entity: Person;
+  public entity: Person;
 
   constructor(private service: PersonService,private router: Router, private route: ActivatedRoute) {
     this.entity = new Person();

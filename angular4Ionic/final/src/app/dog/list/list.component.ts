@@ -13,7 +13,7 @@ export class DogListComponent implements OnInit {
 
   constructor(private service: DogService, private router: Router, private route: ActivatedRoute) {
   }
-  private dogList: FirebaseListObservable<Dog[]>;
+  public dogList: FirebaseListObservable<Dog[]>;
 
   ngOnInit() {
     this.dogList = this.service.getAll();
