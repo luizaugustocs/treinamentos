@@ -1,0 +1,14 @@
+<p-toolbar>
+  <div class="ui-toolbar-group-left">
+    <button pButton type="button"  icon="fa-home" class="ui-button-success" [routerLink]="['./home']"></button>
+    <button pButton type="button" label="Pessoas" icon="fa-user" class="ui-button-success" [routerLink]="['./person']"></button>
+    <button pButton type="button" label="Cachorros" icon="fa-paw" class="ui-button-success" [routerLink]="['./dog']"></button>
+  </div>
+  <div class="ui-toolbar-group-right">
+    <button pButton *ngIf="!logged" type="button" label="Login" icon="fa-sign-in" class="ui-button-primary" [routerLink]="['./login']"></button>
+    <button pButton *ngIf="logged" type="button" label="Logout" icon="fa-sign-out" class="ui-button-primary" (click)="doLogout()"></button>
+  </div>
+</p-toolbar>
+
+<p-growl ></p-growl>
+<router-outlet></router-outlet>

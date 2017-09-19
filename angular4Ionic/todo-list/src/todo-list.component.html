@@ -1,0 +1,6 @@
+<ul>
+    <input type="checkbox" [(ngModel)]="hideDone"> Mostrar somente não finalizadas
+    <li *ngFor="let task of ( tasks | done:hideDone )" (click)="markAsDone(task)" [class.done]="task.done">
+        <input type="checkbox" [(ngModel)]="task.done"> {{task.description}} - {{task.date | date:'dd/MM/yyyy HH:mm:ss'}}
+    </li>
+</ul>
