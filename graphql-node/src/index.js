@@ -7,6 +7,7 @@ import schema from './schema';
 import connectMongo from './mongo-connector';
 import {authenticate} from './authentication';
 import buildDataLoaders from './dataloader';
+import formatError from "./formatError";
 
 const start = async () => {
 
@@ -20,6 +21,7 @@ const start = async () => {
                 mongo,
                 user
             },
+            formatError,
             schema
         }
     }
