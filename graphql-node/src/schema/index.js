@@ -35,7 +35,7 @@ const typeDefs = `
     }
     
     type Query {
-       allLinks: [Link!]!
+       allLinks(filter: LinkFilter): [Link!]!
     } 
 
     type Mutation {
@@ -47,6 +47,12 @@ const typeDefs = `
     
     type Subscription {
         Link(filter: LinkSubscriptionFilter): LinkSubscriptionPayload
+    }
+    
+    input LinkFilter {
+        OR: [LinkFilter!]
+        description_contains: String
+        url_contains: String
     }
     
     input LinkSubscriptionFilter {

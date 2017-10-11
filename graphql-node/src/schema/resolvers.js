@@ -17,10 +17,28 @@ function assertValidLink ({url}) {
     }
 }
 
+function buildFilters({OR = [], description_contains, url_contains}){
+    const filter = (description_contains || url_contains) ? {} : null;
+    if (description_contains) {
+        filter.description = {$regex: `.*${description_contains}.*`}
+    }
+    if (url_contains){
+        filter.url = {$regex: `.*${url_contains}.*`}
+    }
+
+    let filters = filter? [filter]: [];
+
+    OR.forEach(or => {
+        filters = filters.concat(buildFilters(or))
+    });
+    return filters;
+}
+
 export default {
     Query: {
-        allLinks: async (root, data, {mongo: {Links}}) => {
-            return await Links.find({}).toArray();
+        allLinks: async (root, {filter}, {mongo: {Links}}) => {
+            let query = filter ? {$or: buildFilters(filter)} : {};
+            return await Links.find(query).toArray();
         }
     },
     Mutation: {
@@ -69,18 +87,18 @@ export default {
         id: root => root._id || root.id,
         postedBy: async ({postedById}, data, {dataloaders: {userLoader}}) => {
             return await userLoader.load(postedById);
-        }, 
+        },
         votes: async ({_id}, data, {mongo: {Votes}}) => {
             return await Votes.find({linkId: _id}).toArray();
         }
     },
     User: {
         id: root => root._id || root.id,
-         
+
         votes: async ({_id}, data, {mongo: {Votes}}) => {
             return await Votes.find({userId: _id}).toArray();
         }
-            
+
     },
     Vote: {
        id: root => root._id || root.id,
