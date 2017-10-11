@@ -22,22 +22,35 @@ const typeDefs = `
         token: String,
         user: User
     }
-    
-    type Query {
-       allLinks: [Link!]!
-    } 
 
     type Vote {
         id: ID!
         user: User!
         link: Link!
     }
+    
+    type LinkSubscriptionPayload {
+        mutation: _ModelMutationType!
+        node: Link
+    }
+    
+    type Query {
+       allLinks: [Link!]!
+    } 
 
     type Mutation {
         createLink(url: String!, description: String!): Link
         createVote(linkId: ID!): Vote
         createUser(name: String!, authProvider: AuthProviderSignupData!): User
         signinUser(email: AUTH_PROVIDER_EMAIL): SigninPayload!
+    }
+    
+    type Subscription {
+        Link(filter: LinkSubscriptionFilter): LinkSubscriptionPayload
+    }
+    
+    input LinkSubscriptionFilter {
+        mutation_in: [_ModelMutationType!]
     }
 
     input AuthProviderSignupData {
@@ -48,6 +61,13 @@ const typeDefs = `
         email: String!,
         password: String!
     }
+    
+    enum _ModelMutationType {
+        CREATED
+        UPDATED
+        DELETED
+    }
+    
 `;
 
 export default makeExecutableSchema({typeDefs, resolvers});

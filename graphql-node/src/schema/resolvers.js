@@ -1,4 +1,6 @@
 import {ObjectID} from 'mongodb';
+import pubsub from '../pubsub';
+import {URL} from 'url';
 
 class CustomGraphQLError extends Error {
     constructor(message, field) {
@@ -26,7 +28,9 @@ export default {
             assertValidLink(data)
             const newLink = Object.assign({postedById: user && user._id},data);
             const response = await Links.insert(newLink);
-            return Object.assign({id: response.insertedIds[0]},newLink);
+            newLink.id = response.insertedIds[0];
+            pubsub.publish('Link', {Link: {mutation: 'CREATED', node: newLink}});
+            return newLink;
         },
         createVote: async (root, data, {mongo:{Votes}, user}) => {
             const newVote = {
@@ -51,6 +55,12 @@ export default {
                 return {token: `token-${user.email}`, user};
             }
         }
+    },
+
+    Subscription: {
+      Link: {
+          subscribe: () => pubsub.asyncIterator('Link')
+      }
     },
 
     // Chamado antes de qualquer funcao do resolver, é usado pq o mongo retorna o id no campo _id,

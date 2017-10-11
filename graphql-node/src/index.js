@@ -1,6 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {graphqlExpress, graphiqlExpress} from 'apollo-server-express';
+import {execute, subscribe} from 'graphql';
+import {createServer} from 'http';
+import {SubscriptionServer} from 'subscriptions-transport-ws';
 
 import schema from './schema';
 
@@ -27,20 +30,26 @@ const start = async () => {
     }
 
     let app = express();
+    const PORT = 3000;
 
     app.use('/graphql', bodyParser.json(), graphqlExpress(buildOptions));
 
     app.use('/graphiql', graphiqlExpress({
         endpointURL: '/graphql',
-        passHeader: `'Authorization': 'bearer token-luiz@google.com'`
+        passHeader: `'Authorization': 'bearer token-luiz@google.com'`,
+        subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
     }));
 
 
-    const PORT = 3000;
 
-    app.listen(PORT, () => {
+
+    const server = createServer(app);
+
+    server.listen(PORT,() => {
+        SubscriptionServer.create({execute, subscribe, schema}, {server, path: '/subscriptions'});
         console.log(`GraphQL server listening on port ${PORT}`);
-    });
+
+    })
 
 }
 
