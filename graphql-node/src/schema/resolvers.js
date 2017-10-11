@@ -36,9 +36,14 @@ function buildFilters({OR = [], description_contains, url_contains}){
 
 export default {
     Query: {
-        allLinks: async (root, {filter}, {mongo: {Links}}) => {
+        allLinks: async (root, {filter, first, skip}, {mongo: {Links}}) => {
             let query = filter ? {$or: buildFilters(filter)} : {};
-            return await Links.find(query).toArray();
+            const cursor = Links.find(query);
+
+            first && cursor.limit(first);
+            skip && cursor.skip(skip);
+
+            return cursor.toArray();
         }
     },
     Mutation: {
