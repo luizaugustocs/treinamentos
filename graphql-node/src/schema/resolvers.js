@@ -42,8 +42,8 @@ export default {
     // e aqui usa no id
     Link: {
         id: root => root._id || root.id,
-        postedBy: async ({postedById}, data, {mongo: {Users}}) => {
-            return await Users.findOne({_id: postedById});
+        postedBy: async ({postedById}, data, {dataloaders: {userLoader}}) => {
+            return await userLoader.load(postedById);
         }, 
         votes: async ({_id}, data, {mongo: {Votes}}) => {
             return await Votes.find({linkId: _id}).toArray();
@@ -60,8 +60,8 @@ export default {
     Vote: {
        id: root => root._id || root.id,
 
-       user: async({userId}, data, {mongo: {Users}}) => {
-           return await Users.findOne({_id: userId});
+       user: async({userId}, data, {dataloaders: {userLoader}}) => {
+           return await userLoader.load(userId);
        },
 
        link: async({linkId}, data, {mongo: {Links}}) => {

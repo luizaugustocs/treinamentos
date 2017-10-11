@@ -6,6 +6,7 @@ import schema from './schema';
 
 import connectMongo from './mongo-connector';
 import {authenticate} from './authentication';
+import buildDataLoaders from './dataloader';
 
 const start = async () => {
 
@@ -14,23 +15,27 @@ const start = async () => {
     const buildOptions = async (req, res) => {
         const user = await authenticate(req, mongo.Users)
         return {
-            context: {mongo, user},
+            context: {
+                dataloaders: buildDataLoaders(mongo),
+                mongo,
+                user
+            },
             schema
         }
-    }  
+    }
 
     let app = express();
-    
-    app.use('/graphql', bodyParser.json(), graphqlExpress(buildOptions));    
-    
+
+    app.use('/graphql', bodyParser.json(), graphqlExpress(buildOptions));
+
     app.use('/graphiql', graphiqlExpress({
         endpointURL: '/graphql',
         passHeader: `'Authorization': 'bearer token-luiz@google.com'`
     }));
-    
-    
+
+
     const PORT = 3000;
-    
+
     app.listen(PORT, () => {
         console.log(`GraphQL server listening on port ${PORT}`);
     });
