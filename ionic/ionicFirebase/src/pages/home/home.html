@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>Welcome</h3>
+
+
+    <ul>
+        <li *ngFor="let beer of beers | async">
+            {{beer.name}}
+        </li>
+    </ul>
+</ion-content>
