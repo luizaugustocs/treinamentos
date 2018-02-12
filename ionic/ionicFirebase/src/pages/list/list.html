@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>List</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-item-sliding *ngFor="let beer of beers | async"  #slide>
+
+            <ion-item-options side="left">
+                <button color="favorite" ion-button expandable (click)="changeFavorite(beer, slide)">
+                    <ion-icon name="star-outline"></ion-icon>
+                    {{isFavoriteBeer(beer) ? 'Desfavoritar': 'Favoritar'}}
+                </button>
+
+            </ion-item-options>
+            <ion-item [ngClass]="{'favorite': isFavoriteBeer(beer)}">
+                <ion-thumbnail item-start>
+                    <img src="https://cdn.neemo.com.br/uploads/item/photo/46272/heineken.jpg">
+                </ion-thumbnail>
+                <h2>{{beer.name}}</h2>
+                <p>{{beer.alcoholicPercentage}} - {{beer.ibu}}</p>
+
+            </ion-item>
+            <ion-item-options>
+                <button ion-button>Details</button>
+            </ion-item-options>
+
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>
