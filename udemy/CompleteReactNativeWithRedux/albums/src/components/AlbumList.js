@@ -4,12 +4,17 @@ import axios from 'axios';
 
 class AlbumList extends React.Component {
 
+    state = {
+        albums: []
+    };
+
     componentWillMount() {
         axios.get('https://rallycoding.herokuapp.com/api/music_albums')
-            .then(data => {
-                console.log(data)
+            .then(response => {
+                this.setState({ albums: response.data });
             });
     }
+
 
     render() {
         return (
