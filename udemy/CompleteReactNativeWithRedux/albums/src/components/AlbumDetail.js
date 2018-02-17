@@ -22,7 +22,9 @@ const AlbumDetail = ({ album }) => {
                 <Image style={albumImage} source={{ uri: image }} />
             </CardSection>
             <CardSection>
-                <Button/>
+                <Button onClick={this.onBuyButtonClick} >
+                    Buy
+                </Button>
             </CardSection>
         </Card>
     );
