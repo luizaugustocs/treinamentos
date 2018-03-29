@@ -16,12 +16,23 @@ class LoginForm extends React.Component {
 
         this.setState({ error: '', loading: true });
         firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(this.onLoginSuccess)
             .catch(() => {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
                     .catch(() => {
                         this.setState({ error: 'Authentication Failed' });
                     });
+            })
+            .finally(() => {
+                this.setState({ loading: false });
             });
+    };
+
+    onLoginSuccess = () => {
+        this.setState({
+            email: '',
+            password: ''
+        });
     };
 
     renderButton = () => {
@@ -29,9 +40,9 @@ class LoginForm extends React.Component {
         return this.state.loading
             ? <Spinner size="small" />
             : (
-               <Button onClick={this.onLogin}>
-                   Log In
-               </Button>
+                   <Button onClick={this.onLogin}>
+                       Log In
+                   </Button>
                );
     };
 
