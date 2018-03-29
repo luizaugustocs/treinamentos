@@ -1,12 +1,12 @@
 import React from 'react';
 import firebase from 'firebase';
 import { View } from 'react-native';
-import { Header } from './components/common';
+import { Button, Header, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 
 class App extends React.Component {
     state = {
-        loggedIn: false
+        loggedIn: null
     };
 
     componentWillMount() {
@@ -24,12 +24,25 @@ class App extends React.Component {
         });
     }
 
+    renderContent = () => {
+        switch (this.state.loggedIn) {
+        case true:
+            return (<Button style={{ marginTop: 50, paddingTop: 50, paddingBottom: 30 }}>
+                Log out
+            </Button>);
+        case false:
+            return <LoginForm />;
+        default:
+            return <Spinner size="large" />;
+        }
+    }
+
 
     render() {
         return (
             <View>
                 <Header text='Authentication' />
-                <LoginForm />
+                {this.renderContent()}
             </View>
 
         );
