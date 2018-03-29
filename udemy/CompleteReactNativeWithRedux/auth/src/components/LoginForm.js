@@ -10,7 +10,7 @@ class LoginForm extends React.Component {
             <Card>
                 <CardSection>
                     <Input
-                        label=""
+                        label="Email"
                         onChangeText={text => this.setState({ text })}
                         value={this.state.text}
                     />
