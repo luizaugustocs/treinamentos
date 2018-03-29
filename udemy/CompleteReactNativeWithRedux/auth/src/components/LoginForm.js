@@ -12,6 +12,8 @@ class LoginForm extends React.Component {
 
     onLogin = () => {
         const { email, password } = this.state;
+
+        this.setState({ error: '' });
         firebase.auth().signInWithEmailAndPassword(email, password)
             .catch(() => {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -19,7 +21,7 @@ class LoginForm extends React.Component {
                         this.setState({ error: 'Authentication Failed' });
                     });
             });
-    }
+    };
 
     render() {
         return (
@@ -43,7 +45,7 @@ class LoginForm extends React.Component {
                 </CardSection>
                 <Text style={styles.errorTextStyle}>{this.state.error}</Text>
                 <CardSection>
-                    <Button onPress={this.onLogin}>
+                    <Button onClick={this.onLogin}>
                         Log In
                     </Button>
                 </CardSection>
@@ -59,6 +61,6 @@ const styles = {
         alignSelf: 'center',
         color: 'red'
     }
-}
+};
 
 export default LoginForm;
