@@ -5,6 +5,10 @@ import { Header } from './components/common';
 import LoginForm from './components/LoginForm';
 
 class App extends React.Component {
+    state = {
+        loggedIn: false
+    };
+
     componentWillMount() {
         firebase.initializeApp({
             apiKey: 'AIzaSyCYvT7Gi8o2J1xicw9fnfvo9EuT7YUbpJI',
@@ -14,6 +18,10 @@ class App extends React.Component {
             storageBucket: 'auth-rn-course.appspot.com',
             messagingSenderId: '895735181917'
         });
+
+        firebase.auth().onAuthStateChanged((user) => {
+            this.setState({ loggedIn: !!user });
+        });
     }
 
 
@@ -21,7 +29,7 @@ class App extends React.Component {
         return (
             <View>
                 <Header text='Authentication' />
-                <LoginForm/>
+                <LoginForm />
             </View>
 
         );
