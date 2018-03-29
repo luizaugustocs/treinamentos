@@ -24,10 +24,14 @@ class App extends React.Component {
         });
     }
 
+    onLogout = () => {
+        firebase.auth().signOut();
+    }
+
     renderContent = () => {
         switch (this.state.loggedIn) {
         case true:
-            return (<Button style={{ marginTop: 50, paddingTop: 50, paddingBottom: 30 }}>
+            return (<Button onClick={this.onLogout}>
                 Log out
             </Button>);
         case false:
