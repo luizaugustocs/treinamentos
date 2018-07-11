@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {FlatList} from 'react-native';
+import ListItem from './ListItem';
 
 class LibraryList extends React.Component {
 
     renderItem = (library) => {
-
-    }
+        return <ListItem library={library} />;
+    };
 
     render() {
         return (
