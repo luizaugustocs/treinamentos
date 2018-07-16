@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "watch": "tsc --watch",
-    "dev": "tsc-watch  --onSuccess \"NODE_ENV=development node ./dist/index.js\""
+    "dev": "NODE_ENV=development tsc-watch  --onSuccess \" node ./dist/index.js\""
   },
   "keywords": [],
   "author": "",
