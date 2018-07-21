@@ -19,7 +19,7 @@ export const commentTypes = `
 
 export const commentQueries = `
     
-    commentsByPost(post: ID!, first: Int, offset: Int): [Comment!]!
+    commentsByPost(postId: ID!, first: Int, offset: Int): [Comment!]!
 
 `;
 
