@@ -1,6 +1,7 @@
 import * as Sequelize from "sequelize";
 import {BaseModelInterface} from "../interfaces/BaseModelInterface";
-import {genSaltSync, hashSync, compareSync} from 'bcryptjs';
+import {compareSync, genSaltSync, hashSync} from 'bcryptjs';
+
 export interface UserAttributes {
 
     id?: number;
@@ -58,6 +59,12 @@ export default (sequelize: Sequelize.Sequelize, dataTypes: Sequelize.DataTypes):
             beforeCreate: (user: UserInstance, options: Sequelize.CreateOptions): void => {
                 const salt = genSaltSync();
                 user.password = hashSync(user.password, salt);
+            },
+            beforeUpdate: (user: UserInstance, options: Sequelize.CreateOptions): void => {
+                if (user.changed('password')) {
+                    const salt = genSaltSync();
+                    user.password = hashSync(user.password, salt);
+                }
             }
         }
     });
