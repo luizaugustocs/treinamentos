@@ -38,7 +38,7 @@ export const postResolvers = {
 
     },
 
-    Mutations: {
+    Mutation: {
 
         createPost: (parent, {input}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
