@@ -7,10 +7,10 @@ import {handleError} from "../../../utils/utils";
 export const postResolvers = {
 
     Post: {
-        author: (post: PostInstance, {id}, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
+        author: (post: PostInstance, {id}, db: DBConnection, info: GraphQLResolveInfo) => {
             return db.User.findById(post.get('author')).catch(handleError);
         },
-        comments: (post: PostInstance, {first = 10, offset = 0}, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
+        comments: (post: PostInstance, {first = 10, offset = 0}, db: DBConnection, info: GraphQLResolveInfo) => {
             return db.Comment.findAll({
                 where: {post: post.get('id')},
                 limit: first,
@@ -21,13 +21,13 @@ export const postResolvers = {
 
     Query: {
 
-        posts: (parent, {first = 10, offset = 0}, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
+        posts: (parent, {first = 10, offset = 0}, db: DBConnection, info: GraphQLResolveInfo) => {
             return db.Post.findAll({
                 limit: first,
                 offset
             }).catch(handleError)
         },
-        post: (parent, {id}, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
+        post: (parent, {id}, db: DBConnection, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
             return db.Post.findById(parsedId)
                 .then((post: PostInstance) => {
