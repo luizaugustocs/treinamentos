@@ -7,6 +7,7 @@ import {commentTypes} from "./resources/comment/comment.schema";
 import {userResolvers} from "./resources/user/user.resolver";
 import {postResolvers} from "./resources/post/post.resolvers";
 import {commentResolvers} from "./resources/comment/comment.resolvers";
+import {tokenTypes} from "./resources/token/token.schema";
 
 const SchemaDefinition = `
     type Schema {
@@ -39,7 +40,7 @@ const resolvers = {
 
 export default makeExecutableSchema({
     typeDefs: [
-        SchemaDefinition, Query, Mutation, userTypes, postTypes, commentTypes
+        SchemaDefinition, Query, Mutation, userTypes, postTypes, commentTypes, tokenTypes
     ],
     resolvers
 });
