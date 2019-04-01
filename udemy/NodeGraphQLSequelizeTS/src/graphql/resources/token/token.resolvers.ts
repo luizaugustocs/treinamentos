@@ -6,7 +6,7 @@ import {JWT_SECRET} from "../../../utils/utils";
 export const tokenResolvers = {
 
     Mutation: {
-        createToken: (parent, {email, password}, db: DBConnection) => {
+        createToken: (parent, {email, password},{db} : {db : DBConnection}) => {
             return db.User.findOne({
                 where: {email},
                 attributes: ['id', 'password']

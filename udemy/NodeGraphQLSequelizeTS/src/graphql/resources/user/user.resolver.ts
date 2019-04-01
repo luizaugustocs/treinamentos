@@ -7,7 +7,7 @@ import {handleError} from "../../../utils/utils";
 export const userResolvers = {
 
     User: {
-        posts: (user: UserInstance, {first = 10, offset = 0}, db: DBConnection, info: GraphQLResolveInfo) => {
+        posts: (user: UserInstance, {first = 10, offset = 0}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.Post.findAll({
                 where: {author: user.get('id')},
                 limit: first,
@@ -17,14 +17,14 @@ export const userResolvers = {
     },
 
     Query: {
-        users: (parent, {first = 10, offset = 0}, db: DBConnection, info: GraphQLResolveInfo) => {
+        users: (parent, {first = 10, offset = 0}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.User.findAll({
                 limit: first,
                 offset
             }).catch(handleError)
         },
 
-        user: (parent, {id}, db: DBConnection, info: GraphQLResolveInfo) => {
+        user: (parent, {id}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.User.findById(parseInt(id))
                 .then((user: UserInstance) => {
                     if (!user) {
@@ -36,12 +36,12 @@ export const userResolvers = {
     },
 
     Mutations: {
-        createUser: (parent, {input}, db: DBConnection, info: GraphQLResolveInfo) => {
+        createUser: (parent, {input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
                 return db.User.create(input, {transaction});
             }).catch(handleError)
         },
-        updateUser: (parent, {id, input}, db: DBConnection, info: GraphQLResolveInfo) => {
+        updateUser: (parent, {id, input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
@@ -55,7 +55,7 @@ export const userResolvers = {
                     })
             }).catch(handleError)
         },
-        updateUserPassword: (parent, {id, input}, db: DBConnection, info: GraphQLResolveInfo) => {
+        updateUserPassword: (parent, {id, input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
@@ -72,7 +72,7 @@ export const userResolvers = {
         },
 
 
-        deleteUser: (parent, {id}, db: DBConnection, info: GraphQLResolveInfo) => {
+        deleteUser: (parent, {id}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
