@@ -8,6 +8,7 @@ import {userResolvers} from "./resources/user/user.resolver";
 import {postResolvers} from "./resources/post/post.resolvers";
 import {commentResolvers} from "./resources/comment/comment.resolvers";
 import {tokenTypes} from "./resources/token/token.schema";
+import {tokenResolvers} from "./resources/token/token.resolvers";
 
 const SchemaDefinition = `
     type Schema {
@@ -25,7 +26,8 @@ const resolvers = {
     Mutation: {
         ...userResolvers.Mutations,
         ...postResolvers.Mutation,
-        ...commentResolvers.Mutation
+        ...commentResolvers.Mutation,
+        ...tokenResolvers.Mutation
     },
     User: {
         ...userResolvers.User
