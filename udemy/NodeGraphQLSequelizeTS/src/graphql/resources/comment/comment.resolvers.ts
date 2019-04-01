@@ -2,6 +2,7 @@ import {GraphQLResolveInfo} from "graphql";
 import {DBConnection} from "../../../interfaces/DBConnectionInterface";
 import {CommentInstance} from "../../../models/CommentModel";
 import {Transaction} from "sequelize";
+import {handleError} from "../../../utils/utils";
 
 
 export const commentResolvers = {
@@ -9,9 +10,11 @@ export const commentResolvers = {
     Comment: {
         user: (comment: CommentInstance, params, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
             return db.User.findById(comment.get('user'))
+                .catch(handleError);
         },
         post: (comment: CommentInstance, params, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
             return db.Post.findById(comment.get('post'))
+                .catch(handleError);
         }
     },
 
@@ -22,7 +25,7 @@ export const commentResolvers = {
                 where: {post: postId},
                 limit: first,
                 offset
-            })
+            }).catch(handleError);
 
         }
     },
@@ -32,7 +35,7 @@ export const commentResolvers = {
             return db.sequelize.transaction((transaction: Transaction) => {
                     return db.Comment.create(input, {transaction});
                 }
-            )
+            ).catch(handleError)
         },
         updateComment: (parent, {id, input}, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
@@ -46,7 +49,7 @@ export const commentResolvers = {
                         }
                         return comment.update(input, {transaction})
                     })
-            })
+            }).catch(handleError)
         },
         deleteComment: (parent, {id}, {db}: { db: DBConnection }, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
@@ -61,7 +64,7 @@ export const commentResolvers = {
                         return comment.destroy({transaction})
                             .then(comment => Boolean(comment))
                     })
-            })
+            }).catch(handleError)
         }
     }
 };

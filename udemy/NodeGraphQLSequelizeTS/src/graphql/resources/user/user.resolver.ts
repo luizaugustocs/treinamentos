@@ -2,6 +2,7 @@ import {GraphQLResolveInfo} from "graphql";
 import {DBConnection} from "../../../interfaces/DBConnectionInterface";
 import {UserInstance} from "../../../models/UserModel";
 import {Transaction} from "sequelize";
+import {handleError} from "../../../utils/utils";
 
 export const userResolvers = {
 
@@ -11,7 +12,7 @@ export const userResolvers = {
                 where: {author: user.get('id')},
                 limit: first,
                 offset
-            })
+            }).catch(handleError)
         },
     },
 
@@ -20,7 +21,7 @@ export const userResolvers = {
             return db.User.findAll({
                 limit: first,
                 offset
-            })
+            }).catch(handleError)
         },
 
         user: (parent, {id}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
@@ -30,7 +31,7 @@ export const userResolvers = {
                         throw new Error(`User with id ${id} not found.`)
                     }
                     return user;
-                })
+                }).catch(handleError)
         }
     },
 
@@ -38,7 +39,7 @@ export const userResolvers = {
         createUser: (parent, {input}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
                 return db.User.create(input, {transaction});
-            })
+            }).catch(handleError)
         },
         updateUser: (parent, {id, input}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
@@ -52,7 +53,7 @@ export const userResolvers = {
                         }
                         return user.update(input, {transaction})
                     })
-            })
+            }).catch(handleError)
         },
         updateUserPassword: (parent, {id, input}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
@@ -67,7 +68,7 @@ export const userResolvers = {
                         return user.update(input, {transaction})
                             .then((user: UserInstance) => Boolean(user))
                     })
-            })
+            }).catch(handleError)
         },
 
 
@@ -84,7 +85,7 @@ export const userResolvers = {
                         return user.destroy({transaction})
                             .then((user) => Boolean(user))
                     })
-            })
+            }).catch(handleError)
         },
 
 
