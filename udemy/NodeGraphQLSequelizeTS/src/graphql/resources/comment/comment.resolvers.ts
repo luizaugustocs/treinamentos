@@ -3,6 +3,8 @@ import {DBConnection} from "../../../interfaces/DBConnectionInterface";
 import {CommentInstance} from "../../../models/CommentModel";
 import {Transaction} from "sequelize";
 import {handleError} from "../../../utils/utils";
+import {withAuthResolver} from "../../composable";
+import {ResolverContext} from "../../../interfaces/ResolverContextInterface";
 
 
 export const commentResolvers = {
@@ -31,13 +33,14 @@ export const commentResolvers = {
     },
 
     Mutation: {
-        createComment: (parent, {input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        createComment: withAuthResolver((parent, {input}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
+                input.user = authUser.id;
                     return db.Comment.create(input, {transaction});
                 }
             ).catch(handleError)
-        },
-        updateComment: (parent, {id, input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        }),
+        updateComment: withAuthResolver((parent, {id,input}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
@@ -47,11 +50,15 @@ export const commentResolvers = {
                         if (!comment) {
                             throw new Error(`Comment with id ${parsedId} not found.`)
                         }
+                        if (comment.get('user') !== authUser.id) {
+                            throw new Error('Forbidden. You can only edit your own comments.')
+                        }
+                        input.user = authUser.id;
                         return comment.update(input, {transaction})
                     })
             }).catch(handleError)
-        },
-        deleteComment: (parent, {id}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        }),
+        deleteComment:  withAuthResolver((parent, {id}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
@@ -60,11 +67,14 @@ export const commentResolvers = {
                     .then((comment: CommentInstance) => {
                         if (!comment) {
                             throw new Error(`Comment with id ${parsedId} not found.`)
+                        }
+                        if (comment.get('user') !== authUser.id) {
+                            throw new Error('Forbidden. You can only delete your own comments.')
                         }
                         return comment.destroy({transaction})
                             .then(comment => Boolean(comment))
                     })
             }).catch(handleError)
-        }
+        })
     }
 };
