@@ -3,9 +3,8 @@ import {DBConnection} from "../../../interfaces/DBConnectionInterface";
 import {UserInstance} from "../../../models/UserModel";
 import {Transaction} from "sequelize";
 import {handleError} from "../../../utils/utils";
-import {composeResolvers} from "../../composable";
-import {authResolver} from "../../auth.resolver";
-import {verifyTokenResolver} from "../../verify-token.resolver";
+import {withAuthResolver} from "../../composable";
+import {ResolverContext} from "../../../interfaces/ResolverContextInterface";
 
 export const userResolvers = {
 
@@ -20,12 +19,12 @@ export const userResolvers = {
     },
 
     Query: {
-        users: composeResolvers(verifyTokenResolver, authResolver)((parent, {first = 10, offset = 0}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        users: (parent, {first = 10, offset = 0}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.User.findAll({
                 limit: first,
                 offset
             }).catch(handleError)
-        }),
+        },
 
         user: (parent, {id}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.User.findById(parseInt(id))
@@ -44,52 +43,46 @@ export const userResolvers = {
                 return db.User.create(input, {transaction});
             }).catch(handleError)
         },
-        updateUser: (parent, {id, input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
-            const parsedId = parseInt(id);
-
+        updateUser: withAuthResolver((parent, {input}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
                 return db.User
-                    .findById(parsedId)
+                    .findById(authUser.id)
                     .then((user: UserInstance) => {
                         if (!user) {
-                            throw new Error(`User with id ${parsedId} not found.`)
+                            throw new Error(`User with id ${authUser.id} not found.`)
                         }
                         return user.update(input, {transaction})
                     })
             }).catch(handleError)
-        },
-        updateUserPassword: (parent, {id, input}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
-            const parsedId = parseInt(id);
-
+        }),
+        updateUserPassword: withAuthResolver((parent, {input}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
                 return db.User
-                    .findById(parsedId)
+                    .findById(authUser.id)
                     .then((user: UserInstance) => {
                         if (!user) {
-                            throw new Error(`User with id ${parsedId} not found.`)
+                            throw new Error(`User with id ${authUser.id} not found.`)
                         }
                         return user.update(input, {transaction})
                             .then((user: UserInstance) => Boolean(user))
                     })
             }).catch(handleError)
-        },
+        }),
 
 
-        deleteUser: (parent, {id}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
-            const parsedId = parseInt(id);
-
+        deleteUser: withAuthResolver((parent, args, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
                 return db.User
-                    .findById(parsedId)
+                    .findById(authUser.id)
                     .then((user: UserInstance) => {
                         if (!user) {
-                            throw new Error(`User with id ${parsedId} not found.`)
+                            throw new Error(`User with id ${authUser.id} not found.`)
                         }
                         return user.destroy({transaction})
                             .then((user) => Boolean(user))
                     })
             }).catch(handleError)
-        },
+        }),
 
 
     }
