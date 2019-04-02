@@ -3,6 +3,8 @@ import {DBConnection} from "../../../interfaces/DBConnectionInterface";
 import {PostInstance} from "../../../models/PostModel";
 import {Transaction} from "sequelize";
 import {handleError} from "../../../utils/utils";
+import {withAuthResolver} from "../../composable";
+import {ResolverContext} from "../../../interfaces/ResolverContextInterface";
 
 export const postResolvers = {
 
@@ -41,12 +43,13 @@ export const postResolvers = {
 
     Mutation: {
 
-        createPost: (parent, {input}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
+        createPost: withAuthResolver((parent, {input}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((transaction: Transaction) => {
+                input.author = authUser.id;
                 return db.Post.create(input, {transaction});
             }).catch(handleError)
-        },
-        updatePost: (parent, {id, input}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
+        }),
+        updatePost: withAuthResolver((parent, {id, input}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
@@ -56,11 +59,15 @@ export const postResolvers = {
                         if (!post) {
                             throw new Error(`Post with id ${parsedId} not found.`)
                         }
+                        if (post.get('author') !== authUser.id) {
+                            throw new Error(`Forbidden. You can only edit your own posts.`)
+                        }
+                        input.author = authUser.id;
                         return post.update(input, {transaction})
                     })
             }).catch(handleError)
-        },
-        deletePost: (parent, {id}, {db} : {db: DBConnection}, info: GraphQLResolveInfo) => {
+        }),
+        deletePost: withAuthResolver((parent, {id}, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
             const parsedId = parseInt(id);
 
             return db.sequelize.transaction((transaction: Transaction) => {
@@ -69,12 +76,15 @@ export const postResolvers = {
                     .then((post: PostInstance) => {
                         if (!post) {
                             throw new Error(`Post with id ${parsedId} not found.`)
+                        }
+                        if (post.get('author') !== authUser.id) {
+                            throw new Error(`Forbidden. You can only delete your own posts.`)
                         }
                         return post.destroy({transaction})
                             .then((post) => Boolean(post))
                     })
             }).catch(handleError)
-        },
+        }),
 
     }
 };
