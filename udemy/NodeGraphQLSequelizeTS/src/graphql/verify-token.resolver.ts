@@ -9,7 +9,7 @@ export const verifyTokenResolver: ComposableResolver<any, ResolverContext> =
         (parent, args, context: ResolverContext, info) => {
             const token = extractToken(context.authorization);
 
-            jwt.verify(token, JWT_SECRET, ((err) => {
+            return jwt.verify(token, JWT_SECRET, ((err) => {
                 if (!err) {
                     return resolver(parent, args, context, info);
                 }
