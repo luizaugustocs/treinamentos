@@ -34,7 +34,18 @@ export const userResolvers = {
                     }
                     return user;
                 }).catch(handleError)
-        }
+        },
+        currentUser: withAuthResolver((parent, args, {db, authUser} : ResolverContext, info: GraphQLResolveInfo) => {
+            return db.User
+                .findById(authUser.id)
+                .then((user: UserInstance) => {
+                    if (!user) {
+                        throw new Error(`User with id ${authUser.id} not found.`)
+                    }
+                    return user;
+                })
+            })
+
     },
 
     Mutations: {

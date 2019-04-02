@@ -32,6 +32,7 @@ export const userTypes = `
 export const userQueries = `
     users(first: Int, offset: Int): [User!]!
     user(id: ID!): User  
+    currentUser: User
 `;
 
 export const userMutations = `
