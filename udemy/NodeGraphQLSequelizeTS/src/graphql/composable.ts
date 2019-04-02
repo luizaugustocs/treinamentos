@@ -1,4 +1,6 @@
 import {GraphQLFieldResolver} from 'graphql';
+import {authResolver} from "./auth.resolver";
+import {verifyTokenResolver} from "./verify-token.resolver";
 
 export type ComposableResolver<TSource, TContext> =
     (fn: GraphQLFieldResolver<TSource, TContext>) => GraphQLFieldResolver<TSource, TContext>;
@@ -16,4 +18,7 @@ export const composeResolvers = <Source, Context>(... fns: ComposableResolver<So
         return fns.reduceRight((result, currentFn) => currentFn(result), fieldResolver)
     }
 
-}
+};
+
+export const withAuthResolver = <TSource, TContext>(resolver: GraphQLFieldResolver<TSource, TContext>) =>
+    composeResolvers(authResolver, verifyTokenResolver)(resolver);
