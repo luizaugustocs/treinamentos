@@ -4,5 +4,5 @@ import {AuthUser} from "./AuthUserInterface";
 export interface ResolverContext {
     db?: DBConnection;
     authorization?: string;
-    user?: AuthUser;
+    authUser?: AuthUser;
 }
