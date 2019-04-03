@@ -9,8 +9,8 @@ import {ResolverContext} from "../../../interfaces/ResolverContextInterface";
 export const postResolvers = {
 
     Post: {
-        author: (post: PostInstance, {id},{db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
-            return db.User.findById(post.get('author')).catch(handleError);
+        author: (post: PostInstance, {id},{dataloaders} : ResolverContext, info: GraphQLResolveInfo) => {
+            return dataloaders.userLoader.load(post.get('author')).catch(handleError);
         },
         comments: (post: PostInstance, {first = 10, offset = 0},{db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
             return db.Comment.findAll({

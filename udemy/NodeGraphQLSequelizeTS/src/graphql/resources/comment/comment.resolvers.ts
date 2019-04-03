@@ -10,12 +10,12 @@ import {ResolverContext} from "../../../interfaces/ResolverContextInterface";
 export const commentResolvers = {
 
     Comment: {
-        user: (comment: CommentInstance, params, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
-            return db.User.findById(comment.get('user'))
+        user: (comment: CommentInstance, params, {dataloaders} : ResolverContext, info: GraphQLResolveInfo) => {
+            return dataloaders.userLoader.load(comment.get('author'))
                 .catch(handleError);
         },
-        post: (comment: CommentInstance, params, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
-            return db.Post.findById(comment.get('post'))
+        post: (comment: CommentInstance, params, {dataloaders} : ResolverContext, info: GraphQLResolveInfo) => {
+            return dataloaders.postLoader.load(comment.get('post'))
                 .catch(handleError);
         }
     },
