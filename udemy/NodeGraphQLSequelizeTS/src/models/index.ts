@@ -13,7 +13,10 @@ const config = configs[ENV];
 const db = {};
 if (Object.keys(db).length === 0) {
 
-    const operatorsAliases = false;
+    const operatorsAliases = {
+        $in: Sequelize.Op.in
+    };
+
     const sequelize: Sequelize.Sequelize = new Sequelize(
         config.database,
         config.username,
