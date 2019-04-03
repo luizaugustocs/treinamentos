@@ -22,11 +22,12 @@ export const commentResolvers = {
 
     Query: {
 
-        commentsByPost: (parent, {postId, first = 10, offset = 0}, {db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        commentsByPost: (parent, {postId, first = 10, offset = 0}, {db, requestedFields} :ResolverContext, info: GraphQLResolveInfo) => {
             return db.Comment.findAll({
                 where: {post: parseInt(postId)},
                 limit: first,
-                offset
+                offset,
+                attributes: requestedFields.getFields(info)
             }).catch(handleError);
 
         }

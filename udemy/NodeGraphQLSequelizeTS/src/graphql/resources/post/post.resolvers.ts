@@ -12,21 +12,23 @@ export const postResolvers = {
         author: (post: PostInstance, {id},{dataloaders} : ResolverContext, info: GraphQLResolveInfo) => {
             return dataloaders.userLoader.load(post.get('author')).catch(handleError);
         },
-        comments: (post: PostInstance, {first = 10, offset = 0},{db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        comments: (post: PostInstance, {first = 10, offset = 0},{db, requestedFields} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.Comment.findAll({
                 where: {post: post.get('id')},
                 limit: first,
-                offset
+                offset,
+                attributes: requestedFields.getFields(info)
             }).catch(handleError)
         },
     },
 
     Query: {
 
-        posts: (parent, {first = 10, offset = 0},{db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
+        posts: (parent, {first = 10, offset = 0},{db, requestedFields} : ResolverContext, info: GraphQLResolveInfo) => {
             return db.Post.findAll({
                 limit: first,
-                offset
+                offset,
+                attributes: requestedFields.getFields(info, {keep: ['id'], exclude: ['comments']})
             }).catch(handleError)
         },
         post: (parent, {id},{db} : {db : DBConnection}, info: GraphQLResolveInfo) => {
