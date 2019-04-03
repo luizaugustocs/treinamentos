@@ -15,8 +15,8 @@ class App {
 
     constructor() {
         this.express = express();
-        this.dataLoaderFactory = new DataLoaderFactory(db);
         this.requestedFields = new RequestedFields();
+        this.dataLoaderFactory = new DataLoaderFactory(db, this.requestedFields);
         this.middleware();
     }
 
